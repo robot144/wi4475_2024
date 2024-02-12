@@ -22,12 +22,12 @@ The files for this homework series are all available [here](https://github.com/r
 md"""
 ## Julia and Pluto
 
-This homework was created in Pluto. Pluto.jl is a notebook system where one can combine text and code into one document that contains a list of cells. Eeach cell can contain code or text. Unlike the commonly used jupyter the order of execution of the cells is infered automatically, and when you change a cell, then all dependent cells will be run again. The consequnece is that at any time, the results that you see are the output of the current inputs, which is not the case in Jupyter. For installation go to the [install at Pluto.jl site](https://plutojl.org/#install)
+This homework was created in Pluto. Pluto.jl is a notebook system where one can combine text and code into one document that contains a list of cells. Eeach cell can contain code or text. Unlike the commonly used jupyter the order of execution of the cells is infered automatically, and when you change a cell, then all dependent cells will be run again. The consequence is that at any time, the results that you see are the output of the current inputs, which is not the case in Jupyter. For installation go to the [install at Pluto.jl site](https://plutojl.org/#install)
 
 The Julia language is high-level like python, yet fast like c or fortran. Here's a tiny example:
 ```julia
 ratio = 2*π #Greek symbols are allowed and are typed as \pi<TAB>
-a=randn(2,100) #some random points
+a=randn(2,100) #some random Gaussian points
 scatter(a[1,:],a[2,:]) #make a scatter plot
 ```
 
@@ -60,13 +60,17 @@ Use Bayes' rule to derive $P(X_0=p|Y_1=y_1)$ for both values of $y_1$ and plot t
 # ╔═╡ f1d29008-dc5b-409e-940c-bb23e9619cc2
 md"""
 __Answer__
-$latex ~ blabla ~ x=\frac{1}{2}$
+${\sqrt{latex}} ~ \mathbf{\beta la\beta la} ~ x=\frac{1}{2}$
+
+Some text here:
+- point 1
+- point 2
 """
 
 # ╔═╡ 577f6e98-ef37-4dc0-9832-ab6f220c44fa
-#sample figure
+#sample figure to get you started
 begin
-f(p)=(1-p)*p #rubbish
+f(p)=(1-p)*p #just some formula
 plot(f,0.0,1.0,label="bla") # p ∈ [0,1]
 xlabel!("p")
 end
@@ -75,7 +79,7 @@ end
 md"""
 ### 1b: Bayes applied in sequence
 
-After the result for $P(X_0=p|Y_1=y_1)$, we throw the coin again to obtain $Y_2$. Calculate $P(X_0=p|Y_1=y_1,Y_2=y_2)$ for all combinations of $(y_1,y_2$. The result should build on $P(X_0=p|Y_1=y_1)$ and not start from the prior directly. Note that there are now 4 possibilities for $y_1,y_2$. Does the order of the observations $Y_1$ and $Y_2$ affect the result?
+After the result for $P(X_0=p|Y_1=y_1)$, we throw the coin again to obtain $Y_2$. Calculate $P(X_0=p|Y_1=y_1,Y_2=y_2)$ for all combinations of $(y_1,y_2)$. The result should build on $P(X_0=p|Y_1=y_1)$ and not start from the prior directly. Note that there are now 4 possibilities for $y_1,y_2$. Does the order of the observations $Y_1$ and $Y_2$ affect the result?
 """
 
 # ╔═╡ 5a9813e9-534a-43f2-848a-0ef222c4ee51
@@ -87,7 +91,7 @@ md"""
 
 Now we apply Bayes in one go to a vector with $N$ values $(y_1,y_2,\ldots,y_N)$ and we try to find the maximum for the parameter $p$. Note that the denominator, that normalizes the probability, does not depend on $p$, thus we can also omit it for the optimization. Derive an expression for the estimator $\hat{p}$.
 
-Next apply the esimator to the data in file [coin.csv](https://raw.githubusercontent.com/robot144/wi4475_2024/main/coin.csv) for curvature $c=0.0$, which is the flat coin. The file contains the results after trowing each of the $M=5$ coins $N=100$ times. The example below shows how to read and work with the data.
+Next apply the estimator to the data in file [coin.csv](https://raw.githubusercontent.com/robot144/wi4475_2024/main/coin.csv) for curvature $c=0.0$, which is the flat coin. The file contains the results after throwing each of the $M=5$ coins $N=100$ times. The example below shows how to read and work with the data.
 """
 
 # ╔═╡ 9b8343e1-8949-4191-bc5a-60b8173ac8dc
@@ -105,7 +109,7 @@ end
 md"""
 ### 1d: Data distribution or bootstrapping
 
-One create an approximate model for the distribution of the data by random sampling with replacement from the dataset. Next one can apply the estimator to the generated samples (observations). This process can be repeated many times to compute the mean, standard deviation (or other statistics) and in that way estimate the uncertainty resulting from the finite sample size. Apply this method to the data of the previous question to compute a standarddeviation for $\hat{p}$.
+One can create an approximate model for the distribution of the data by random sampling with replacement from the dataset, if the samples are assumed to be independent. Next one can apply the estimator to the generated samples (observations). This process can be repeated many times to compute the mean, standard deviation (or other statistics) and in that way estimate the uncertainty resulting from the finite sample size. Apply this method to the data of the previous question to compute a standarddeviation for $\hat{p}$.
 """
 
 # ╔═╡ a1c6cf61-385e-4034-95c0-4d2a57814eb9
@@ -120,10 +124,10 @@ end
 md"""
 ### 1e: Logistic model
 
-We can also try to model the probability $p$ as a function of the curvature $c$ with a logistic function $p(c)=σ(a*c-b)$ with $σ(x)=1/(1+e^{-x})$ and parapmeters $a$ and $b$. For each sample in the data we know which coin was used, so the data contains pairs $(c_i,y_i)$. 
+We can also try to model the probability $p$ as a function of the curvature $c$ with a logistic function $p(c)=σ(a*c-b)$ with $σ(x)=1/(1+e^{-x})$ and parameters $a$ and $b$. For each sample in the data we know which coin was used, so the data contains pairs $(c_i,y_i)$. 
 
 Derive an expression for $-log(p(Y_i|(a,b))$ and find the optimal parameters. Note that for one observation $y_k$ we have $p(y_k|a,b)=p_{a,b}(c_k)^y_k (1-p_{a,b}(c_k))^{1-y_k}$. 
-Finally, try to find values $a$ and $b$ with a low log-likelihood. Let's keep this part simple and just try many values. Don't waste too much time on an efficient optimizer, we'll look into gradients in the second homework.
+Finally, try to find values $a$ and $b$ with a low log-likelihood. Let's keep this part simple and just try many values for $a$ and $b$. Don't waste too much time on an efficient optimizer, we'll look into gradients in the second homework.
 """
 
 # ╔═╡ 3fb3abdf-7e7e-48b4-bae4-8ebedd16b37e
@@ -136,7 +140,7 @@ end
 md"""
 ## Question 2: Double pendulum
 
-A double pendulum is a simple well known mechanical device that can show chaotic behaviour. The dynamics of the system can derived based on the conservation of momentum. The image below shows the notation for the variables. For more info you can visit [Double Pendulum on Wikipedia](https://en.wikipedia.org/wiki/Double_pendulum) and [double-pendulum on myphysicslab.com](https://www.myphysicslab.com/pendulum/double-pendulum-en.html).
+A double pendulum is a simple well known mechanical device that can show chaotic behaviour. The dynamics of the system can be derived based on the conservation of momentum. The image below shows the notation for the variables. For more info you can visit [Double Pendulum on Wikipedia](https://en.wikipedia.org/wiki/Double_pendulum) and [double-pendulum on myphysicslab.com](https://www.myphysicslab.com/pendulum/double-pendulum-en.html).
 
 ![image of double pendulum](https://upload.wikimedia.org/wikipedia/commons/7/78/Double-Pendulum.svg)
 
@@ -245,7 +249,7 @@ Compute the Jacobian and study the stability at this equilibrium using the eigen
 md"""
 ### 2d: Conservation of Energy
 
-The energy of the double pendulum consists of kinetic and potential energy. Derive and expression for the energy $E=E_{kinetic}+E_{potential}$ and compute it at several times along a trajectory. Assuming that energy should be conserved exactly for this system, the differences over time can be interpreted as numerical error how large are these?
+The energy of the double pendulum consists of kinetic and potential energy. Derive and expression for the energy $E=E_{kinetic}+E_{potential}$ and compute it at several times along a trajectory. Assuming that energy should be conserved exactly for this system, the differences over time can be interpreted as numerical error. How large are these?
 """
 
 # ╔═╡ 2ded39cc-123c-4063-a114-5c220e83abd1
@@ -273,21 +277,22 @@ begin
 	dt=0.1
 	t_range=tspan[1]:dt:tspan[2]
 	Et = [E(sol(t),p) for t in t_range]
-	plot(t_range,Et)
+	plot(t_range,Et,label="E(t)")
+	xlabel!("t")
 end
 
 # ╔═╡ 44569e08-167c-4ad4-b932-e3d648846363
 md"""
 ### 2e: Stability and energy
 
-Plot the energy in a region around the most stable equilibrium with zero velocity, ie $\omega_1=0$ and $\omega_2=0$. Consider the set of points $S=\{(\theta_1,\theta_2) ~ where ~ E([\theta_1,\theta_2,0,0])\le E_0+\epsilon\}$ where epsilon is some small positive number and $E_0$ is the energy in the equilibrium. Can a trajectory that starts in $[\theta_1,\theta_2,0,0]$ with $(\theta_1,\theta_2)\in S$ leave the set? What does this isay about the stability?
+Plot the energy in a region around the most stable equilibrium with zero velocity, ie $\omega_1=0$ and $\omega_2=0$. Consider the set of points $S=\{(\theta_1,\theta_2) ~ where ~ E([\theta_1,\theta_2,0,0])\le E_0+\epsilon\}$ where epsilon is some small positive number and $E_0$ is the energy in the equilibrium. Can a trajectory that starts in $[\theta_1,\theta_2,0,0]$ with $(\theta_1,\theta_2)\in S$ leave the set? What does this say about the stability?
 """
 
 # ╔═╡ 780a92d1-1350-4770-8a48-7651f6acea71
 begin
-	θ1_range = -1.0:0.25:1.0
-	θ2_range = -1.0:0.2:1.0
-	values=[cos(θ1)*cos(θ2) for θ1 in θ1_range, θ2 in θ2_range] #nonsens
+	θ1_range = -1.0:0.1:1.0
+	θ2_range = -1.0:0.1:1.0
+	values=[cos(θ1)*cos(θ2) for θ1 in θ1_range, θ2 in θ2_range] #Just some formula to get you started.
 	heatmap(θ1_range,θ2_range,values')
 	xlabel!("θ1")
 end
@@ -2477,7 +2482,7 @@ version = "1.4.1+1"
 # ╟─222982d3-a79e-45b9-80bc-8f400efe2f5c
 # ╠═fbe1aa0d-e740-45fa-a66a-dc5ed7400413
 # ╟─ee08de62-c378-11ee-01ab-2f95082c690c
-# ╠═06a6a476-6009-4e60-8e32-f9af14527bfa
+# ╟─06a6a476-6009-4e60-8e32-f9af14527bfa
 # ╠═f1d29008-dc5b-409e-940c-bb23e9619cc2
 # ╠═577f6e98-ef37-4dc0-9832-ab6f220c44fa
 # ╟─338f12ec-f2a1-47d3-8bd2-fc1ef57a256d
@@ -2496,7 +2501,7 @@ version = "1.4.1+1"
 # ╠═79924228-b54d-494a-a694-22a95193b510
 # ╟─40bb70d6-6992-4ea4-98ee-fe1fa494019f
 # ╠═f869c1a6-a5c2-4ef3-a9f8-3fcb66102053
-# ╠═1abdfee9-a3c4-4913-8846-2088440ab22d
+# ╟─1abdfee9-a3c4-4913-8846-2088440ab22d
 # ╠═e9626863-cc68-4274-bbe3-d059d18cc5da
 # ╟─4a9ae6d0-0d09-443d-bc2d-407e42ae63ed
 # ╠═16157b56-80fb-4ec6-82f0-403291b5709d
